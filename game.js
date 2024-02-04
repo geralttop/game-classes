@@ -9,9 +9,11 @@ class User {
         this.armor = this.maxArmor;
         this.regenArmor = 5;
         this.maxDamage = 20;
-        this.minDamage = 0;
+        this.minDamage = 10;
         this.balance = 100;
         this.income = 10;
+        this.multiplierCritDamage = 1.4;
+        this.critChance = 0.05;
 
         //The cost of pumping up user metrics
         this.priceIncreaseMaxHealth = 20;
@@ -21,12 +23,22 @@ class User {
         this.priceIncreaseMinDamage = 25;
         this.priceIncreaseMaxDamage = 25;
         this.priceIncreaseIncome = 40;
+        this.priceIncreaseMultiplierCritDamage = 100;//2
+        this.priceIncreaseCritChance = 100;//2
     }
 
     //user beats up another user
     strike(target) {
         let damage = Math.floor(Math.random() * (this.maxDamage - this.minDamage + 1)  + this.minDamage)
-        target.armor -= damage;
+        let crit = Math.random().toFixed(2) < this.critChance ? true : false; 
+
+        if (crit) {
+            damage = Math.floor(damage * this.multiplierCritDamage)
+            target.armor -= damage;
+            console.log('Критический удар!');
+        }
+        else target.armor -= damage;
+
         if (target.armor < 0) {
             target.health += target.armor;
             target.armor = 0;
@@ -40,6 +52,7 @@ class User {
             this.balance -= this.priceIncreaseMaxHealth;
             this.priceIncreaseMaxHealth = Math.floor(this.priceIncreaseMaxHealth * 1.5);
             this.maxHealth += 10;
+            this.health = ((this.maxHealth - this.health) * 0.2 + this.health).toFixed(2);
             console.log(`${this.name} увеличино максимальное здоровье на 10`);
         }
         else {
@@ -129,6 +142,29 @@ class User {
         }
     }
 
+    increaseMultiplierCritDamage() {
+        if (this.balance >= this.priceIncreaseMultiplierCritDamage){
+            this.balance -= this.priceIncreaseMultiplierCritDamage;
+            this.priceIncreaseMultiplierCritDamage = Math.floor(this.priceIncreaseMultiplierCritDamage * 2);
+            this.multiplierCritDamage += 0.2;
+            console.log(`${this.name} увеличил множитель на 0.2`);
+        }
+        else {
+            console.log(`Недостаточно денег у ${this.name}`);
+        }
+    }
+
+    increaseCritChance() {
+        if (this.balance >= this.priceIncreaseCritChance && this.critChance < 0.25){
+            this.balance -= this.priceIncreaseCritChance;
+            this.priceIncreaseCritChance = Math.floor(this.priceIncreaseCritChance * 2);
+            this.critChance += 0.05;
+            console.log(`${this.name} увеличил шанс крита на 0.05`);
+        }
+        else {
+            console.log(`Недостаточно денег или достигнут максимальный шанс ${this.name}`);
+        }
+    }
     incomePerMove() {
         this.balance += this.income;
     }
@@ -149,6 +185,8 @@ class User {
     Минимальный урон:                 ${this.minDamage}
     Баланас:                          ${this.balance}
     Доход:                            ${this.income}
+    Множитель критического урона      ${this.multiplierCritDamage}
+    Шанс критического урона           ${this.critChance}
 
     Стоимость увеличения дохода:      ${this.priceIncreaseIncome}
     Стоимость 1 хп:                   ${this.priceRegen}
@@ -156,19 +194,30 @@ class User {
     Стоимость увеличения макс. урона: ${this.priceIncreaseMaxDamage}
     Стоимость увеличения здоровья:    ${this.priceIncreaseMaxHealth}
     Стоимость увеличения реген брони: ${this.priceIncreaseArmorRegenPerMove}
-    Стоимость увеличения макс брони:  ${this.priceIncreaseMaxArmor}`);
+    Стоимость увеличения макс брони:  ${this.priceIncreaseMaxArmor}
+    Стоимость увелич множителя крита: ${this.priceIncreaseMultiplierCritDamage}
+    Стоимость увеличения шанса:       ${this.priceIncreaseCritChance}`);
     }
 }
 
 alert('Из-за особенностей работы хромиума, чтобы игра заработала в окне "Начать игру" нажимаете отмена, потом обновляете страницу и теперь в окне "Начать игру" нажимаете "Ок". Если вы пользуетесь горящей лисой, то эти манипуляции можно не совершать, можете сразу начинать игру. \n Игра рассчитана на двоих человек. Приятной игры!')
 flag = confirm('Начать игру (чтобы видеть события игры откройте консоль браузера(нажмите f12 на клавиатуре))'); //flag to start game
+flag == false ? location.reload() : true;
 
-//player generation
-let user1 = new User(prompt('Введите имя первого игрока'));
-let user2 = new User(prompt('Введите имя второго игрока'));
-let users = [user1, user2];
+let users = []
+if (flag){
+    let countOfPlayers = +prompt('1 или 2 человек играет. Если 1, то второй игрок будет ботом')
 
-alert('Чтобы прокачать ваши показатели, вы обращаетесь к Богу и платите ему деньги. И Бог очень не любит, когда его лишний раз беспокоят. Поэтому, если вы не можете прокачать, потому что у вас нет денег или потому что вы нарушите законы физики, и все равно обращаетесь к Богу, он вас накажет. Наказание заключается в том, что он вам ничего не прокочает и ход перейдет к другому игроку.')
+    // if (countOfPlayers == 1 || countOfPlayers == 2);
+    // else flag == false;
+    //player generation
+    let user1 = new User(prompt('Введите имя первого игрока'));
+    let user2 = new User(prompt('Введите имя второго игрока'));
+    users = [user1, user2];
+    
+    alert('Чтобы прокачать ваши показатели, вы обращаетесь к Богу и платите ему деньги. И Бог очень не любит, когда его лишний раз беспокоят. Поэтому, если вы не можете прокачать, потому что у вас нет денег или потому что вы нарушите законы физики, и все равно обращаетесь к Богу, он вас накажет. Наказание заключается в том, что он вам ничего не прокочает и ход перейдет к другому игроку.')
+    
+}
 
 //Game cycle
 let turn = 0;
@@ -184,14 +233,16 @@ while (flag){
     //user choose action
     action = prompt(`Ходит ${users[turn].name}
     Выберите действие (напишите номер действия)
-    1. Атаковать
-    2. Регенерация здоровья
-    3. Увеличить доход
-    4. Увеличить мин. урон на 5
-    5. Увеличить макс. урон на 5
-    6. Увеличить макс здоровье на 10
-    7. Увеличить реген брони на 5
-    8. Увеличить макс броню на 10`)
+    1.  Атаковать
+    2.  Регенерация здоровья
+    3.  Увеличить доход
+    4.  Увеличить мин. урон на 5
+    5.  Увеличить макс. урон на 5
+    6.  Увеличить макс здоровье на 10
+    7.  Увеличить реген брони на 5
+    8.  Увеличить макс броню на 10
+    9.  Увеличить множитель крита на 0.2
+    0. Увеличить шанс крита на 0.05`)
 
     //action is doing
     switch(+action){
@@ -219,10 +270,16 @@ while (flag){
         case 8:
             users[turn].increaseMaxArmor();
             break;
+        case 9:
+            users[turn].increaseMultiplierCritDamage();
+            break;
+        case 0:
+            users[turn].increaseCritChance();
+            break;
         default:
-            alert('Вы побеспокоили бога без какой либо цели, поэтому он вас убил')
-            alert(`${users[Math.abs(turn - 1)].name} Победил`);
-            flag = false;
+            // alert('Вы побеспокоили бога без какой либо цели, поэтому он вас убил')
+            // alert(`${users[Math.abs(turn - 1)].name} Победил`);
+            // flag = false;
             break;
     }
     
@@ -234,5 +291,6 @@ while (flag){
 
 
 
+// console.log(Math.random().toFixed(2));
 
 
