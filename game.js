@@ -52,9 +52,12 @@ class User {
         if (this.balance >= Math.floor((this.maxHealth - this.health)*this.priceRegen)){
             console.log(`${this.name} восстановил ${this.maxHealth - this.health}`);
             this.balance -= Math.floor((this.maxHealth - this.health)*this.priceRegen);
+            if (this.health != this.maxHealth) {
+                this.priceRegen = (this.priceRegen*1.3).toFixed(2);
+                target.priceRegen = (target.priceRegen*1.3).toFixed(2);
+            }
             this.health = this.maxHealth;
-            this.priceRegen = (this.priceRegen*1.3).toFixed(2);
-            target.priceRegen = (target.priceRegen*1.3).toFixed(2);
+            
         }
         else {
             console.log(`Недостаточно денег у ${this.name}`);
@@ -217,6 +220,8 @@ while (flag){
             users[turn].increaseMaxArmor();
             break;
         default:
+            alert('Вы побеспокоили бога без какой либо цели, поэтому он вас убил')
+            alert(`${users[Math.abs(turn - 1)].name} Победил`);
             flag = false;
             break;
     }
