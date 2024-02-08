@@ -1,7 +1,7 @@
 class User {
     constructor(name) {
         this.name = name;
-        
+
         //User metrics
         this.maxHealth = 100;
         this.health = this.maxHealth;
@@ -29,8 +29,8 @@ class User {
 
     //user beats up another user
     strike(target) {
-        let damage = Math.floor(Math.random() * (this.maxDamage - this.minDamage + 1)  + this.minDamage)
-        let crit = Math.random().toFixed(2) < this.critChance ? true : false; 
+        let damage = Math.floor(Math.random() * (this.maxDamage - this.minDamage + 1) + this.minDamage)
+        let crit = Math.random().toFixed(2) < this.critChance ? true : false;
 
         if (crit) {
             damage = Math.floor(damage * this.multiplierCritDamage)
@@ -48,11 +48,11 @@ class User {
 
     ///increase max health
     increaseMaxHealth() {
-        if (this.balance >= this.priceIncreaseMaxHealth){
+        if (this.balance >= this.priceIncreaseMaxHealth) {
             this.balance -= this.priceIncreaseMaxHealth;
             this.priceIncreaseMaxHealth = Math.floor(this.priceIncreaseMaxHealth * 1.5);
             this.maxHealth += 10;
-            this.health = ((this.maxHealth - this.health) * 0.2 + this.health).toFixed(2);
+            this.health = Math.floor((this.maxHealth - this.health) * 0.2 + this.health);
             console.log(`${this.name} увеличино максимальное здоровье на 10`);
         }
         else {
@@ -62,15 +62,15 @@ class User {
 
     //Health regeneration to maximum health
     regen(target) {
-        if (this.balance >= Math.floor((this.maxHealth - this.health)*this.priceRegen)){
+        if (this.balance >= Math.floor((this.maxHealth - this.health) * this.priceRegen)) {
             console.log(`${this.name} восстановил ${this.maxHealth - this.health}`);
-            this.balance -= Math.floor((this.maxHealth - this.health)*this.priceRegen);
+            this.balance -= Math.floor((this.maxHealth - this.health) * this.priceRegen);
             if (this.health != this.maxHealth) {
-                this.priceRegen = (this.priceRegen*1.3).toFixed(2);
-                target.priceRegen = (target.priceRegen*1.3).toFixed(2);
+                this.priceRegen = (this.priceRegen * 1.3).toFixed(2);
+                target.priceRegen = (target.priceRegen * 1.3).toFixed(2);
             }
             this.health = this.maxHealth;
-            
+
         }
         else {
             console.log(`Недостаточно денег у ${this.name}`);
@@ -79,7 +79,7 @@ class User {
 
     //increase max armor
     increaseMaxArmor() {
-        if (this.balance >= this.priceIncreaseMaxArmor){
+        if (this.balance >= this.priceIncreaseMaxArmor) {
             this.balance -= this.priceIncreaseMaxArmor;
             this.priceIncreaseMaxArmor = Math.floor(this.priceIncreaseMaxArmor * 2);
             this.maxArmor += 10;
@@ -92,7 +92,7 @@ class User {
 
     //increase armor regeneration
     increaseRegenArmor() {
-        if (this.balance >= this.priceIncreaseArmorRegenPerMove){
+        if (this.balance >= this.priceIncreaseArmorRegenPerMove) {
             this.balance -= this.priceIncreaseArmorRegenPerMove;
             this.priceIncreaseArmorRegenPerMove = Math.floor(this.priceIncreaseArmorRegenPerMove * 2);
             this.regenArmor += 5;
@@ -102,10 +102,10 @@ class User {
             console.log(`Недостаточно денег у ${this.name}`);
         }
     }
-    
+
     //increase min damage
     increaseMinDamage() {
-        if (this.minDamage+5 <= this.maxDamage && this.balance >= this.priceIncreaseMinDamage){
+        if (this.minDamage + 5 <= this.maxDamage && this.balance >= this.priceIncreaseMinDamage) {
             this.balance -= this.priceIncreaseMinDamage;
             this.priceIncreaseMinDamage = Math.floor(this.priceIncreaseMinDamage * 1.5);
             this.minDamage += 5;
@@ -118,7 +118,7 @@ class User {
 
     //increase max damage
     increaseMaxDamage() {
-        if (this.balance >= this.priceIncreaseMaxDamage){
+        if (this.balance >= this.priceIncreaseMaxDamage) {
             this.balance -= this.priceIncreaseMaxDamage;
             this.priceIncreaseMaxDamage = Math.floor(this.priceIncreaseMaxDamage * 1.5);
             this.maxDamage += 5;
@@ -131,7 +131,7 @@ class User {
 
     //increasing income
     increaseIncome() {
-        if (this.balance >= this.priceIncreaseIncome){
+        if (this.balance >= this.priceIncreaseIncome) {
             this.balance -= this.priceIncreaseIncome;
             this.priceIncreaseIncome = Math.floor(this.priceIncreaseIncome * 1.5);
             this.income += 20;
@@ -143,10 +143,10 @@ class User {
     }
 
     increaseMultiplierCritDamage() {
-        if (this.balance >= this.priceIncreaseMultiplierCritDamage){
+        if (this.balance >= this.priceIncreaseMultiplierCritDamage) {
             this.balance -= this.priceIncreaseMultiplierCritDamage;
             this.priceIncreaseMultiplierCritDamage = Math.floor(this.priceIncreaseMultiplierCritDamage * 2);
-            this.multiplierCritDamage += 0.2;
+            this.multiplierCritDamage = Math.floor(this.multiplierCritDamage + 0.2);
             console.log(`${this.name} увеличил множитель на 0.2`);
         }
         else {
@@ -155,10 +155,10 @@ class User {
     }
 
     increaseCritChance() {
-        if (this.balance >= this.priceIncreaseCritChance && this.critChance < 0.25){
+        if (this.balance >= this.priceIncreaseCritChance && this.critChance < 0.25) {
             this.balance -= this.priceIncreaseCritChance;
             this.priceIncreaseCritChance = Math.floor(this.priceIncreaseCritChance * 2);
-            this.critChance += 0.05;
+            this.critChance = (this.critChance + 0.05).toFixed(2);
             console.log(`${this.name} увеличил шанс крита на 0.05`);
         }
         else {
@@ -204,34 +204,37 @@ alert('Из-за особенностей работы хромиума, что�
 flag = confirm('Начать игру (чтобы видеть события игры откройте консоль браузера(нажмите f12 на клавиатуре))'); //flag to start game
 flag == false ? location.reload() : true;
 
-let users = []
-if (flag){
-    let countOfPlayers = +prompt('1 или 2 человек играет. Если 1, то второй игрок будет ботом')
 
-    // if (countOfPlayers == 1 || countOfPlayers == 2);
-    // else flag == false;
+let users = []
+if (flag) {
+
+
     //player generation
     let user1 = new User(prompt('Введите имя первого игрока'));
     let user2 = new User(prompt('Введите имя второго игрока'));
     users = [user1, user2];
-    
-    alert('Чтобы прокачать ваши показатели, вы обращаетесь к Богу и платите ему деньги. И Бог очень не любит, когда его лишний раз беспокоят. Поэтому, если вы не можете прокачать, потому что у вас нет денег или потому что вы нарушите законы физики, и все равно обращаетесь к Богу, он вас накажет. Наказание заключается в том, что он вам ничего не прокочает и ход перейдет к другому игроку.')
-    
-}
 
+    alert('Чтобы прокачать ваши показатели, вы обращаетесь к Богу и платите ему деньги. И Бог очень не любит, когда его лишний раз беспокоят. Поэтому, если вы не можете прокачать, потому что у вас нет денег или потому что вы нарушите законы физики, и все равно обращаетесь к Богу, он вас накажет. Наказание заключается в том, что он вам ничего не прокочает и ход перейдет к другому игроку.')
+
+}
+let countOfPlayers = +prompt('1 или 2 человек играет. Если 1, то второй игрок будет ботом')
+let bot;
+if (countOfPlayers == 1) bot = true;
 //Game cycle
 let turn = 0;
-while (flag){
+while (flag) {
     //game over
-    if (users[turn].health < 0){
+    if (users[turn].health < 0) {
         alert(`${users[Math.abs(turn - 1)].name} Победил`);
         break;
     }
 
     users[turn].info();
-    
+    users[Math.abs(turn - 1)].info();
+
     //user choose action
-    action = prompt(`Ходит ${users[turn].name}
+    if (bot && turn == 1) action = Math.floor(Math.random() * (9 - 0 + 1) + 0)
+    else action = prompt(`Ходит ${users[turn].name}
     Выберите действие (напишите номер действия)
     1.  Атаковать
     2.  Регенерация здоровья
@@ -242,10 +245,9 @@ while (flag){
     7.  Увеличить реген брони на 5
     8.  Увеличить макс броню на 10
     9.  Увеличить множитель крита на 0.2
-    0. Увеличить шанс крита на 0.05`)
-
+    0. Увеличить шанс крита на 0.05`);
     //action is doing
-    switch(+action){
+    switch (+action) {
         case 1:
             users[turn].strike(users[Math.abs(turn - 1)]);
             break;
@@ -282,7 +284,7 @@ while (flag){
             // flag = false;
             break;
     }
-    
+
     users[turn].incomePerMove()
     users[turn].armorPerMove()
 

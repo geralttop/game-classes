@@ -1,0 +1,25 @@
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    max-height: 97vh;
+    overflow: hidden;
+
+    .info-about-users {
+        display: flex;
+
+        .iu {
+            flex-basis: 50%;
+        }
+    }
+
+    .events {
+        overflow: scroll;
+        max-height: 60vh;
+
+        p {
+
+            color: red;
+        }
+
+    }
+}
