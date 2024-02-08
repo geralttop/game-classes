@@ -1,3 +1,5 @@
+'use strict'
+
 class User {
     constructor(name) {
         this.name = name;
@@ -201,7 +203,7 @@ class User {
 }
 
 alert('Из-за особенностей работы хромиума, чтобы игра заработала в окне "Начать игру" нажимаете отмена, потом обновляете страницу и теперь в окне "Начать игру" нажимаете "Ок". Если вы пользуетесь горящей лисой, то эти манипуляции можно не совершать, можете сразу начинать игру. \n Игра рассчитана на двоих человек. Приятной игры!')
-flag = confirm('Начать игру (чтобы видеть события игры откройте консоль браузера(нажмите f12 на клавиатуре))'); //flag to start game
+let flag = confirm('Начать игру (чтобы видеть события игры откройте консоль браузера(нажмите f12 на клавиатуре))'); //flag to start game
 flag == false ? location.reload() : true;
 
 
@@ -233,6 +235,7 @@ while (flag) {
     users[Math.abs(turn - 1)].info();
 
     //user choose action
+    let action;
     if (bot && turn == 1) action = Math.floor(Math.random() * (9 - 0 + 1) + 0)
     else action = prompt(`Ходит ${users[turn].name}
     Выберите действие (напишите номер действия)
@@ -278,11 +281,15 @@ while (flag) {
         case 0:
             users[turn].increaseCritChance();
             break;
+        case 73:
+            flag = false;
+            break;
         default:
+            console.log("Нет такого действия. Бог вас прощает, но его терпение не вечно");
+            continue;
             // alert('Вы побеспокоили бога без какой либо цели, поэтому он вас убил')
             // alert(`${users[Math.abs(turn - 1)].name} Победил`);
             // flag = false;
-            break;
     }
 
     users[turn].incomePerMove()
