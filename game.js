@@ -1,5 +1,10 @@
 'use strict'
 
+const inp = document.querySelector('input');
+const btn = document.querySelector('button')
+
+
+
 class User {
     constructor(name) {
         this.name = name;
@@ -202,53 +207,67 @@ class User {
     }
 }
 
-alert('Из-за особенностей работы хромиума, чтобы игра заработала в окне "Начать игру" нажимаете отмена, потом обновляете страницу и теперь в окне "Начать игру" нажимаете "Ок". Если вы пользуетесь горящей лисой, то эти манипуляции можно не совершать, можете сразу начинать игру. \n Игра рассчитана на двоих человек. Приятной игры!')
+
 let flag = confirm('Начать игру (чтобы видеть события игры откройте консоль браузера(нажмите f12 на клавиатуре))'); //flag to start game
-flag == false ? location.reload() : true;
-
-
+let countOfPlayers;
 let users = []
 if (flag) {
 
-
+    countOfPlayers = +prompt('1 или 2 человек играет. Если 1, то второй игрок будет ботом')
     //player generation
     let user1 = new User(prompt('Введите имя первого игрока'));
     let user2 = new User(prompt('Введите имя второго игрока'));
+
     users = [user1, user2];
 
     alert('Чтобы прокачать ваши показатели, вы обращаетесь к Богу и платите ему деньги. И Бог очень не любит, когда его лишний раз беспокоят. Поэтому, если вы не можете прокачать, потому что у вас нет денег или потому что вы нарушите законы физики, и все равно обращаетесь к Богу, он вас накажет. Наказание заключается в том, что он вам ничего не прокочает и ход перейдет к другому игроку.')
 
 }
-let countOfPlayers = +prompt('1 или 2 человек играет. Если 1, то второй игрок будет ботом')
+
+
 let bot;
 if (countOfPlayers == 1) bot = true;
 //Game cycle
 let turn = 0;
-while (flag) {
-    //game over
+
+document.querySelector('.rules').innerHTML = `  Выберите действие (напишите номер действия)<br>
+                                                1.  Атаковать <br>
+                                                2.  Регенерация здоровья <br>
+                                                3.  Увеличить доход<br>
+                                                4.  Увеличить мин. урон на 5<br>
+                                                5.  Увеличить макс. урон на 5<br>
+                                                6.  Увеличить макс здоровье на 10<br>
+                                                7.  Увеличить реген брони на 5<br>
+                                                8.  Увеличить макс броню на 10<br>
+                                                9.  Увеличить множитель крита на 0.2<br>
+                                                0. Увеличить шанс крита на 0.05`
+//TODO 
+function nextTurn(){
     if (users[turn].health < 0) {
         alert(`${users[Math.abs(turn - 1)].name} Победил`);
-        break;
     }
-
-    users[turn].info();
-    users[Math.abs(turn - 1)].info();
-
+    
+    document.querySelector('.ktohodit').innerHTML= `Ходит ${users[turn].name}`
     //user choose action
     let action;
-    if (bot && turn == 1) action = Math.floor(Math.random() * (9 - 0 + 1) + 0)
-    else action = prompt(`Ходит ${users[turn].name}
-    Выберите действие (напишите номер действия)
-    1.  Атаковать
-    2.  Регенерация здоровья
-    3.  Увеличить доход
-    4.  Увеличить мин. урон на 5
-    5.  Увеличить макс. урон на 5
-    6.  Увеличить макс здоровье на 10
-    7.  Увеличить реген брони на 5
-    8.  Увеличить макс броню на 10
-    9.  Увеличить множитель крита на 0.2
-    0. Увеличить шанс крита на 0.05`);
+    if (bot && turn == 1) {
+        action = Math.floor(Math.random() * (9 - 0 + 1) + 0)
+    }
+    else {
+        action = inp.value;
+    //     action = prompt(`Ходит ${users[turn].name}
+    // Выберите действие (напишите номер действия)
+    // 1.  Атаковать
+    // 2.  Регенерация здоровья
+    // 3.  Увеличить доход
+    // 4.  Увеличить мин. урон на 5
+    // 5.  Увеличить макс. урон на 5
+    // 6.  Увеличить макс здоровье на 10
+    // 7.  Увеличить реген брони на 5
+    // 8.  Увеличить макс броню на 10
+    // 9.  Увеличить множитель крита на 0.2
+    // 0. Увеличить шанс крита на 0.05`)
+    };
     //action is doing
     switch (+action) {
         case 1:
@@ -286,16 +305,14 @@ while (flag) {
             break;
         default:
             console.log("Нет такого действия. Бог вас прощает, но его терпение не вечно");
-            continue;
-            // alert('Вы побеспокоили бога без какой либо цели, поэтому он вас убил')
-            // alert(`${users[Math.abs(turn - 1)].name} Победил`);
-            // flag = false;
     }
 
     users[turn].incomePerMove()
     users[turn].armorPerMove()
 
-    turn == 1 ? turn = 0 : turn++; //The turn passes to the next player
+    users[turn].info();
+    users[Math.abs(turn - 1)].info();
+    turn == 1 ? turn = 0 : turn++;
 }
 
 

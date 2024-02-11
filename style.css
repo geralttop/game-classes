@@ -1,25 +1,33 @@
 .container {
-    max-width: 700px;
-    margin: 0 auto;
-    max-height: 97vh;
-    overflow: hidden;
-
-    .info-about-users {
-        display: flex;
-
-        .iu {
-            flex-basis: 50%;
-        }
+    max-width: 1300px;
+    margin: auto;
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+            'players players players'
+            'inpbtn actions about_me'
+            'rules actions about_me';
+    grid-template-rows: 2fr 70px 3fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5px;
+    .item{
+        border-radius: 10px;
+        border: 1px solid black;
+        padding: 10px;
     }
-
-    .events {
-        overflow: scroll;
-        max-height: 60vh;
-
-        p {
-
-            color: red;
-        }
-
+    .players{
+        grid-area: players;
+    }
+    .inpbtn{
+        grid-area: inpbtn;
+    }
+    .rules{
+        grid-area: rules;
+    }
+    .actions{
+        grid-area: actions;
+    }
+    .about_me{
+        grid-area: about_me;
     }
 }
