@@ -1,33 +1,67 @@
 .container {
     max-width: 1300px;
     margin: auto;
-    height: 100vh;
+    height: 97.5vh;
     display: grid;
-    grid-template-areas: 
-            'players players players'
-            'inpbtn actions about_me'
-            'rules actions about_me';
-    grid-template-rows: 2fr 70px 3fr;
+    grid-template-areas:
+        'players players actions'
+        'about_me inpbtn actions'
+        'about_me rules actions';
+    grid-template-rows: 2fr 70px 1fr;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 5px;
-    .item{
+    .item {
         border-radius: 10px;
         border: 1px solid black;
         padding: 10px;
     }
-    .players{
+    .players {
         grid-area: players;
+        justify-content: space-between;
+        display: flex;
+        .player{
+            display: grid;
+            grid-template-columns: 1fr 50px;
+            gap: 15px;
+        }
+        
+        overflow-x: scroll;
     }
-    .inpbtn{
+    .inpbtn {
         grid-area: inpbtn;
     }
-    .rules{
+    .rules {
         grid-area: rules;
     }
-    .actions{
+    .actions {
         grid-area: actions;
+        overflow-y: auto;
     }
-    .about_me{
+    .about_me {
+        grid-area: about_me;
+    }
+}
+
+@media (max-width: 1010px){
+    .container{
+        width: 1000px;
+        grid-template-areas: 
+        'players'
+        'inpbtn'
+        'actions'
+        'rules';
+    }
+    .inpbtn {
+        grid-area: inpbtn;
+    }
+    .rules {
+        grid-area: rules;
+    }
+    .actions {
+        grid-area: actions;
+        overflow-y: auto;
+    }
+    .about_me {
         grid-area: about_me;
     }
 }

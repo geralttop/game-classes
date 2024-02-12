@@ -1,9 +1,9 @@
 'use strict'
 
 const inp = document.querySelector('input');
-const btn = document.querySelector('button')
-
-
+const btn = document.querySelector('button');
+const actionText = document.querySelector('.actions');
+const players = document.querySelectorAll('.player');
 
 class User {
     constructor(name) {
@@ -42,7 +42,7 @@ class User {
         if (crit) {
             damage = Math.floor(damage * this.multiplierCritDamage)
             target.armor -= damage;
-            console.log('Критический удар!');
+            actionText.innerHTML += '<br>Критический удар!'
         }
         else target.armor -= damage;
 
@@ -50,7 +50,7 @@ class User {
             target.health += target.armor;
             target.armor = 0;
         }
-        console.log(`${this.name} нанес ${damage} урона ${target.name}`);
+        actionText.innerHTML += `<br>${this.name} нанес ${damage} урона ${target.name}`;
     }
 
     ///increase max health
@@ -60,17 +60,17 @@ class User {
             this.priceIncreaseMaxHealth = Math.floor(this.priceIncreaseMaxHealth * 1.5);
             this.maxHealth += 10;
             this.health = Math.floor((this.maxHealth - this.health) * 0.2 + this.health);
-            console.log(`${this.name} увеличино максимальное здоровье на 10`);
+            actionText.innerHTML += `<br>${this.name} увеличино максимальное здоровье на 10`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
     //Health regeneration to maximum health
     regen(target) {
         if (this.balance >= Math.floor((this.maxHealth - this.health) * this.priceRegen)) {
-            console.log(`${this.name} восстановил ${this.maxHealth - this.health}`);
+            actionText.innerHTML += `<br>${this.name} восстановил ${this.maxHealth - this.health}`;
             this.balance -= Math.floor((this.maxHealth - this.health) * this.priceRegen);
             if (this.health != this.maxHealth) {
                 this.priceRegen = (this.priceRegen * 1.3).toFixed(2);
@@ -80,7 +80,7 @@ class User {
 
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
@@ -90,10 +90,10 @@ class User {
             this.balance -= this.priceIncreaseMaxArmor;
             this.priceIncreaseMaxArmor = Math.floor(this.priceIncreaseMaxArmor * 2);
             this.maxArmor += 10;
-            console.log(`${this.name} увеличино максимальное броян на 10`);
+            actionText.innerHTML += `<br>${this.name} увеличино максимальное броян на 10`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
@@ -103,10 +103,10 @@ class User {
             this.balance -= this.priceIncreaseArmorRegenPerMove;
             this.priceIncreaseArmorRegenPerMove = Math.floor(this.priceIncreaseArmorRegenPerMove * 2);
             this.regenArmor += 5;
-            console.log(`${this.name} увеличино реген брони на 5`);
+            actionText.innerHTML += `<br>${this.name} увеличино реген брони на 5`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
@@ -116,10 +116,10 @@ class User {
             this.balance -= this.priceIncreaseMinDamage;
             this.priceIncreaseMinDamage = Math.floor(this.priceIncreaseMinDamage * 1.5);
             this.minDamage += 5;
-            console.log(`${this.name} увеличил минимальный урон на 5`);
+            actionText.innerHTML += `<br>${this.name} увеличил минимальный урон на 5`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name} или Минимальный урон уже равен максимальному`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name} или Минимальный урон уже равен максимальному`;
         }
     }
 
@@ -129,10 +129,10 @@ class User {
             this.balance -= this.priceIncreaseMaxDamage;
             this.priceIncreaseMaxDamage = Math.floor(this.priceIncreaseMaxDamage * 1.5);
             this.maxDamage += 5;
-            console.log(`${this.name} увеличил максимальный урон на 5`);
+            actionText.innerHTML += `<br>${this.name} увеличил максимальный урон на 5`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
@@ -142,10 +142,10 @@ class User {
             this.balance -= this.priceIncreaseIncome;
             this.priceIncreaseIncome = Math.floor(this.priceIncreaseIncome * 1.5);
             this.income += 20;
-            console.log(`${this.name} увеличил доход на 20`);
+            actionText.innerHTML += `<br>${this.name} увеличил доход на 20`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
@@ -154,10 +154,10 @@ class User {
             this.balance -= this.priceIncreaseMultiplierCritDamage;
             this.priceIncreaseMultiplierCritDamage = Math.floor(this.priceIncreaseMultiplierCritDamage * 2);
             this.multiplierCritDamage = Math.floor(this.multiplierCritDamage + 0.2);
-            console.log(`${this.name} увеличил множитель на 0.2`);
+            actionText.innerHTML += `<br>${this.name} увеличил множитель на 0.2`;
         }
         else {
-            console.log(`Недостаточно денег у ${this.name}`);
+            actionText.innerHTML += `<br>Недостаточно денег у ${this.name}`;
         }
     }
 
@@ -166,10 +166,10 @@ class User {
             this.balance -= this.priceIncreaseCritChance;
             this.priceIncreaseCritChance = Math.floor(this.priceIncreaseCritChance * 2);
             this.critChance = (this.critChance + 0.05).toFixed(2);
-            console.log(`${this.name} увеличил шанс крита на 0.05`);
+            actionText.innerHTML += `<br>${this.name} увеличил шанс крита на 0.05`;
         }
         else {
-            console.log(`Недостаточно денег или достигнут максимальный шанс ${this.name}`);
+            actionText += `<br>Недостаточно денег или достигнут максимальный шанс ${this.name}`;
         }
     }
     incomePerMove() {
@@ -182,28 +182,47 @@ class User {
     }
 
     info() {
-        console.log(`${this.name}
-    Максимальное здоровье:            ${this.maxHealth}
-    Здоровье:                         ${this.health}
-    Броня:                            ${this.armor}
-    Максимальная броня:               ${this.maxArmor}
-    Восстановление брони за ход:      ${this.regenArmor}
-    Максимальный урон:                ${this.maxDamage}
-    Минимальный урон:                 ${this.minDamage}
-    Баланас:                          ${this.balance}
-    Доход:                            ${this.income}
-    Множитель критического урона      ${this.multiplierCritDamage}
-    Шанс критического урона           ${this.critChance}
-
-    Стоимость увеличения дохода:      ${this.priceIncreaseIncome}
-    Стоимость 1 хп:                   ${this.priceRegen}
-    Стоимость увеличения мин. урона:  ${this.priceIncreaseMinDamage}
-    Стоимость увеличения макс. урона: ${this.priceIncreaseMaxDamage}
-    Стоимость увеличения здоровья:    ${this.priceIncreaseMaxHealth}
-    Стоимость увеличения реген брони: ${this.priceIncreaseArmorRegenPerMove}
-    Стоимость увеличения макс брони:  ${this.priceIncreaseMaxArmor}
-    Стоимость увелич множителя крита: ${this.priceIncreaseMultiplierCritDamage}
-    Стоимость увеличения шанса:       ${this.priceIncreaseCritChance}`);
+        players[turn].innerHTML = `
+        <p class='text_value'>${this.name}<br>
+        Максимальное здоровье:<br>
+        Здоровье:<br>Броня:<br>
+        Максимальная броня:<br>
+        Восстановление брони за ход:<br>
+        Максимальный урон:<br>Минимальный урон:<br>
+        Баланас:<br>
+        Доход:<br>
+        Множитель критического урона:<br>
+        Шанс критического урона:<br>
+        Стоимость увеличения дохода:<br>
+        Стоимость 1 хп:<br>
+        Стоимость увеличения мин. урона:<br>
+        Стоимость увеличения макс. урона:<br>
+        Стоимость увеличения здоровья:<br>
+        Стоимость увеличения реген брони:<br>
+        Стоимость увеличения макс брони:<br>
+        Стоимость увелич множителя крита:<br>
+        Стоимость увеличения шанса:</p>
+        <p class='value'><br>${this.maxHealth}<br>
+        ${this.health}<br>
+        ${this.armor}<br>
+        ${this.maxArmor}<br>
+        ${this.regenArmor}<br>
+        ${this.maxDamage}<br>
+        ${this.minDamage}<br>
+        ${this.balance}<br>
+        ${this.income}<br>
+        ${this.multiplierCritDamage}<br>
+        ${this.critChance}<br>
+        ${this.priceIncreaseIncome}<br>
+        ${this.priceRegen}<br>
+        ${this.priceIncreaseMinDamage}<br>
+        ${this.priceIncreaseMaxDamage}<br>
+        ${this.priceIncreaseMaxHealth}<br>
+        ${this.priceIncreaseArmorRegenPerMove}<br>
+        ${this.priceIncreaseMaxArmor}<br>
+        ${this.priceIncreaseMultiplierCritDamage}<br>
+        ${this.priceIncreaseCritChance}</p>`
+        console.log(turn);
     }
 }
 
@@ -242,12 +261,12 @@ document.querySelector('.rules').innerHTML = `  Выберите действи�
                                                 9.  Увеличить множитель крита на 0.2<br>
                                                 0. Увеличить шанс крита на 0.05`
 //TODO 
-function nextTurn(){
+function nextTurn() {
     if (users[turn].health < 0) {
         alert(`${users[Math.abs(turn - 1)].name} Победил`);
     }
-    
-    document.querySelector('.ktohodit').innerHTML= `Ходит ${users[turn].name}`
+
+    document.querySelector('.ktohodit').innerHTML = `Ходит ${users[Math.abs(turn - 1)].name}`
     //user choose action
     let action;
     if (bot && turn == 1) {
@@ -255,18 +274,6 @@ function nextTurn(){
     }
     else {
         action = inp.value;
-    //     action = prompt(`Ходит ${users[turn].name}
-    // Выберите действие (напишите номер действия)
-    // 1.  Атаковать
-    // 2.  Регенерация здоровья
-    // 3.  Увеличить доход
-    // 4.  Увеличить мин. урон на 5
-    // 5.  Увеличить макс. урон на 5
-    // 6.  Увеличить макс здоровье на 10
-    // 7.  Увеличить реген брони на 5
-    // 8.  Увеличить макс броню на 10
-    // 9.  Увеличить множитель крита на 0.2
-    // 0. Увеличить шанс крита на 0.05`)
     };
     //action is doing
     switch (+action) {
@@ -304,19 +311,13 @@ function nextTurn(){
             flag = false;
             break;
         default:
-            console.log("Нет такого действия. Бог вас прощает, но его терпение не вечно");
+            actionText.innerHTML += "<br>Нет такого действия. Бог вас прощает, но его терпение не вечно";
     }
 
     users[turn].incomePerMove()
     users[turn].armorPerMove()
 
     users[turn].info();
-    users[Math.abs(turn - 1)].info();
     turn == 1 ? turn = 0 : turn++;
+    users[turn].info();
 }
-
-
-
-// console.log(Math.random().toFixed(2));
-
-
