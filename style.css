@@ -44,12 +44,16 @@
 
 @media (max-width: 1010px){
     .container{
-        width: 1000px;
+        min-width: 368px;
+        margin: 0 auto;
         grid-template-areas: 
         'players'
         'inpbtn'
         'actions'
         'rules';
+    }
+    .players{
+        grid-area: players;
     }
     .inpbtn {
         grid-area: inpbtn;
@@ -63,5 +67,6 @@
     }
     .about_me {
         grid-area: about_me;
+        display: none;
     }
 }

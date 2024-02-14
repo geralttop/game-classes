@@ -3,7 +3,8 @@
 const inp = document.querySelector('input');
 const btn = document.querySelector('button');
 const actionText = document.querySelector('.actions');
-const players = document.querySelectorAll('.player');
+const text_value = document.querySelectorAll('.text_value');
+const value = document.querySelectorAll('.value');
 
 class User {
     constructor(name) {
@@ -182,7 +183,7 @@ class User {
     }
 
     info() {
-        players[turn].innerHTML = `
+        text_value[turn].innerHTML = `
         <p class='text_value'>${this.name}<br>
         Максимальное здоровье:<br>
         Здоровье:<br>Броня:<br>
@@ -201,27 +202,12 @@ class User {
         Стоимость увеличения реген брони:<br>
         Стоимость увеличения макс брони:<br>
         Стоимость увелич множителя крита:<br>
-        Стоимость увеличения шанса:</p>
-        <p class='value'><br>${this.maxHealth}<br>
-        ${this.health}<br>
-        ${this.armor}<br>
-        ${this.maxArmor}<br>
-        ${this.regenArmor}<br>
-        ${this.maxDamage}<br>
-        ${this.minDamage}<br>
-        ${this.balance}<br>
-        ${this.income}<br>
-        ${this.multiplierCritDamage}<br>
-        ${this.critChance}<br>
-        ${this.priceIncreaseIncome}<br>
-        ${this.priceRegen}<br>
-        ${this.priceIncreaseMinDamage}<br>
-        ${this.priceIncreaseMaxDamage}<br>
-        ${this.priceIncreaseMaxHealth}<br>
-        ${this.priceIncreaseArmorRegenPerMove}<br>
-        ${this.priceIncreaseMaxArmor}<br>
-        ${this.priceIncreaseMultiplierCritDamage}<br>
-        ${this.priceIncreaseCritChance}</p>`
+        Стоимость увеличения шанса:</p>`;
+
+        value[turn].innerHTML = `<br>`;
+        for (let i in users[turn]) {
+            value[turn].innerHTML += `<br>${users[turn][i]}`;
+        }
         console.log(turn);
     }
 }
